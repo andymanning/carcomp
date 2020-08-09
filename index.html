@@ -1,0 +1,78 @@
+<head>
+    <!-- meta http-equiv="refresh" content="5; URL=http://localhost:8000/index.html" -->
+    <script src="/webix/codebase/webix.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/webix/codebase/webix.css" type="text/css"> 
+
+</head>
+<body>
+    <script type="text/javascript" charset="utf-8">
+       webix.ui({
+           id:"layout",
+           height: 480,
+           width:800,
+        rows:[
+        { view:"button", id:"reload" , label:"Reload", click:function() {window.location.reload();}},
+      {cols:[   { view:"button", label:"Rear Camera", click:showRearCamera},
+                { view:"button", label:"Cabin Camera",click:showCabinCamera},
+                { view:"button", label:"Front Camera",click:showFrontCamera},
+                { view:"button", label:"Instruments",click:showInstruments}]},
+                { cells:[
+                    { view: "template", id:"rearCamera", template: "<img id='rearCamera'></img>"},
+                    { view: "template", id:"frontCamera", template: "<img id='frontCamera'></img>"},
+                    { view: "template", id:"cabinCamera", template: "<img id='cabinCamera'></img>"}
+                ]}
+            ] 
+});
+
+var currCamera = "";
+
+function stopRearCamera() {
+    socket.send("stop_camera:rear")
+}
+
+function stopFrontCamera() {
+    $$("frontCamera").hide();
+    socket.send("stop_camera:front")
+}
+
+function stopCabinCamera() {
+    $$("cabinCamera").hide();
+    socket.send("stop_camera:cabin")
+}
+
+function showRearCamera() {
+    stopFrontCamera();
+    stopCabinCamera();
+    currCamera = "rearCamera";
+    $$("rearCamera").show();
+    socket.send("read_camera:rear");
+}
+
+function showFrontCamera() {
+    stopRearCamera();
+    stopCabinCamera();
+    currCamera = "frontCamera";
+    $$("frontCamera").show();
+    socket.send("read_camera:front");
+}
+
+function showCabinCamera() {
+    stopRearCamera();
+    stopFrontCamera();
+    currCamera = "cabinCamera";
+    $$("cabinCamera").show();
+    socket.send("read_camera:cabin");
+}
+
+function showInstruments() {
+    hideCamera();
+    webix.message("Showing Instruments");
+}
+
+var socket = new WebSocket("ws://" + window.location.hostname + ":8001" + "/websocket");
+//socket.onopen = function () {readCamera()};
+socket.onmessage = function (messageEvent) {
+        document.getElementById(currCamera).src = "data:image/jpeg;base64," + messageEvent.data;
+ };
+    </script>
+</body>
