@@ -3,6 +3,12 @@
     <script src="/webix/codebase/webix.js" type="text/javascript"></script>
     <link rel="stylesheet" href="/webix/codebase/webix.css" type="text/css"> 
 
+    <!-- 3rd party libraries-->
+    <script src ="gauge.min.js" type="text/javascript"></script>
+
+    <!-- Components -->
+    <script src="instrumentPanel.js" type="text/javascript"></script>
+
 </head>
 <body>
     <script type="text/javascript" charset="utf-8">
@@ -19,7 +25,8 @@
                 { cells:[
                     { view: "template", id:"rearCamera", template: "<img id='rearCamera'></img>"},
                     { view: "template", id:"frontCamera", template: "<img id='frontCamera'></img>"},
-                    { view: "template", id:"cabinCamera", template: "<img id='cabinCamera'></img>"}
+                    { view: "template", id:"cabinCamera", template: "<img id='cabinCamera'></img>"},
+                    instrumentPanel
                 ]}
             ] 
 });
@@ -65,8 +72,16 @@ function showCabinCamera() {
 }
 
 function showInstruments() {
-    hideCamera();
+ //   stopRearCamera();
+  //  stopFrontCamera();
+   // stopCabinCamera();
+    $$("instrumentPanel").show();
     webix.message("Showing Instruments");
+    var speedGauge = new RadialGauge({renderTo: 'speed'}).draw();
+    var revsGauge = new RadialGauge({renderTo: 'revs'}).draw();
+    var tempGauge = new RadialGauge(tempGaugeDef).draw();
+
+    
 }
 
 var socket = new WebSocket("ws://" + window.location.hostname + ":8001" + "/websocket");
