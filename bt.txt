@@ -1,0 +1,24 @@
+>bluetoothctl
+>power on
+>pairable on
+>agent on
+>default-agent
+>scan on
+>pair [MACADDR]
+[default pin 1234]
+>trust [MACADDR]
+>quit
+
+>sudo rfcomm bind rfcomm0 [MACADDR]
+
+screen /dev/rfcomm0
+
+Try:
+>echo "atz" > /dev/rfcomm0
+>echo "atl1" > /dev/rfcomm0
+>echo "ath1" > /dev/rfcomm0
+>echo "atsp0"
+>echo "010C"
+
+OC engine RPM
+
