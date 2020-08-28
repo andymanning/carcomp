@@ -15,8 +15,8 @@ Push button on pin 5 and it will shutdown
 
 
 #Turn on a LED when pi starts
-Add the line "gpio=15=op,dh" to "/boot/config.txt"
-* change 15 to be whatever you want!
+Add the line "gpio=16=op,dh" to "/boot/config.txt"
+* change 16 to be whatever you want!
 
 #Link for powerup/powerdown
 https://www.embedded-computing.com/guest-blogs/raspberry-pi-power-up-and-shutdown-with-a-physical-button
